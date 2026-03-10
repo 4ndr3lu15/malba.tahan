@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malba Tahan - O Enigma do Sultão</title>
+    <!-- Google Fonts for medieval/arabic feel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="overlay" id="intro-overlay">
+        <div class="modal">
+            <h1 id="intro-title">O Enigma do Sultão</h1>
+            <p id="intro-text-1">Bem-vindo, viajante. À sua frente há 8 esferas de ouro. Todas parecem idênticas, mas uma é ligeiramente mais <strong>pesada</strong> do que as outras.</p>
+            <p id="intro-text-2">Você dispõe de uma balança de pratos, mas o Sultão decreta que ela só poderá ser usada <strong>DUAS VEZES</strong>.</p>
+            <p id="intro-text-3">Descubra qual esfera é a mais pesada em no máximo 2 pesagens para conquistar o favor do Sultão. Se falhar ou errar o palpite, você perde!</p>
+            <ul>
+                <li id="intro-list-1">Clique em uma esfera na área de preparação e depois em um dos pratos da balança para movê-la (sempre 2 cliques: esfera + prato).</li>
+                <li id="intro-list-2">Para devolver uma esfera da balança: clique nela uma vez (ela ficará selecionada) e clique nela novamente para confirmá-la de volta à área de preparação (sempre 2 cliques).</li>
+                <li id="intro-list-3">Clique em <strong>“Pesar”</strong> apenas quando os dois pratos tiverem o <strong>mesmo número</strong> de esferas.</li>
+                <li id="intro-list-4">Quando tiver certeza de qual esfera é a mais pesada, clique em <strong>“Identificar”</strong> e selecione-a.</li>
+                <li id="intro-list-5">Dê 2 cliques em qualquer prato da balança para que todas as esferas voltem para a área de preparação.</li>
+            </ul>
+            <button id="start-btn" class="btn primary-btn">Aceitar Desafio</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1 id="main-title">O Enigma do Sultão: 8 Pesos de Ouro</h1>
+            <div class="header-row">
+                <div class="stats">
+                    <div class="stat-box"><span id="measurement-label">Pesagens</span>: <span id="measurement-count">0</span> / 2</div>
+                </div>
+            </div>
+            <div class="messages" id="message-area">Coloque a mesma quantidade de esferas em cada prato para poder pesar.</div>
+        </header>
+
+        <main>
+            <div class="scale-section">
+                <div class="scale-container" id="scale-container">
+                    <!-- The beam -->
+                    <div class="scale-beam" id="scale-beam">
+                        <!-- Left Pan -->
+                        <div class="pan-wrapper left-pan-wrapper">
+                            <div class="chain left-chain"></div>
+                            <div class="pan left-pan" id="left-pan" data-pan="left">
+                                <div class="pan-surface"></div>
+                                <div class="pan-items"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Pan -->
+                        <div class="pan-wrapper right-pan-wrapper">
+                            <div class="chain right-chain"></div>
+                            <div class="pan right-pan" id="right-pan" data-pan="right">
+                                <div class="pan-surface"></div>
+                                <div class="pan-items"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- The fulcrum base -->
+                    <div class="scale-base"></div>
+                </div>
+
+                <div class="controls">
+                    <button id="weigh-btn" class="btn action-btn" disabled>Pesar</button>
+                    <button id="identify-btn" class="btn warning-btn" disabled>Identificar Bola Pesada</button>
+                    <button id="reset-btn" class="btn secondary-btn">Reiniciar</button>
+                </div>
+            </div>
+
+            <div class="staging-section">
+                <h2 id="staging-title">Área de Preparação</h2>
+                <div class="staging-area" id="staging-area">
+                    <!-- Balls will be dynamically generated here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- End Game Modal -->
+    <div class="overlay hidden" id="end-overlay">
+        <div class="modal">
+            <h1 id="end-title">Fim de Jogo</h1>
+            <p id="end-message">Você já usou todas as suas pesagens.</p>
+            <button id="play-again-btn" class="btn primary-btn">Jogar Novamente</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
