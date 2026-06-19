@@ -1,3 +1,3 @@
-"""Malba Tahan — a terminal balance-puzzle toy."""
+"""Malba Tahan — a terminal visual-novel game inspired by 'The Man Who Counted'."""
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"

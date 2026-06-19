@@ -1,86 +1,47 @@
-# malba tahan — 8 weights of gold
+# malba tahan — the man who counted
 
-a terminal toy inspired by the spirit of the brazilian book **"the man who
+a terminal **visual novel** inspired by the brazilian book **"the man who
 counted"** (*o homem que calculava*) by **malba tahan**, which also gives this
 repository its name.
 
-you are challenged with a classic balance puzzle: among **8 gold balls**, one is
-slightly **heavier** than the rest. discover which one using the balance scale at
-most **twice**.
+the story is narrated, and as it unfolds you stand in the sandals of **beremiz
+samir**, the man who counted. when beremiz meets a riddle, so do you — and solving
+the puzzle carries the story forward.
 
-this is a full rewrite of the original web demo as a **beautiful terminal
-application**, written in **python** with the [textual](https://textual.textualize.io/)
-tui framework and managed with [**uv**](https://docs.astral.sh/uv/).
+written in **python** with the [textual](https://textual.textualize.io/) tui
+framework and managed with [**uv**](https://docs.astral.sh/uv/).
 
 ---
 
-## overview
+## status (v0.0.2)
 
-- **goal**: find the single heaviest ball among eight that look identical.
-- **constraint**: you may use the **weigh** action at most **twice**.
-- **outcome**:
-  - identify the heavy ball correctly → you win the sultan's favour.
-  - guess wrong (or run out of weighings and miss) → you lose the challenge.
+an early **prototype of the visual-novel system**:
 
-the heavy ball is chosen at random at the start of each round and is **not**
-visibly different — only the scale can reveal it. the game simulates the balance
-and counts your weighings; finding the answer in two weighings is up to you, like
-a true *man who counted*.
+- an animated title screen and a narrated **prologue** — meeting beremiz on the
+  road to baghdad,
+- a typewriter dialogue box, cross-fading ascii backgrounds, branching choices,
+- and the first bespoke puzzle, the **trial of the eight gold balls** (find the
+  one heavier ball with a balance, in two weighings), woven into the story so the
+  outcome changes what beremiz says next.
+
+the roadmap:
+
+- **0.0.x** — build and polish the engine and the way puzzles plug into it.
+- **0.1.0+** — add the book itself, one chapter at a time.
 
 ---
 
 ## running it
 
-you only need [uv](https://docs.astral.sh/uv/) installed; it manages python and
-all dependencies for you.
+you only need [uv](https://docs.astral.sh/uv/); it manages python and all
+dependencies for you.
 
 ```bash
-# from the project directory
 uv run malba.tahan
 ```
 
-that's it — `uv` creates the environment, installs textual, and launches the app.
-
-alternatively:
-
-```bash
-uv run python -m malba_tahan
-```
-
----
-
-## how to play
-
-the screen shows a balance scale, a status line (weighings used, balls per pan),
-control buttons, and the eight gold balls in a staging area below.
-
-everything works with **mouse clicks** or **keyboard shortcuts**.
-
-1. **select a ball** — click a ball in the staging area (it highlights).
-2. **place it on a pan** — click **◀ place on left** or **place on right ▶**
-   (or press `l` / `r`).
-3. **return a ball** — click a ball that is already on a pan to send it back to
-   staging. **clear pans** (`c`) empties both pans at once.
-4. **weigh** — the **weigh** button (`w`) enables only when **both pans hold the
-   same number of balls** (at least one each). the beam tips toward the heavier
-   side; the heavier pan visibly sinks.
-5. **identify** — after your second weighing the game switches to identify mode
-   automatically. you can also enter it earlier with **identify heavy ball**
-   (`i`). in identify mode, click the ball you believe is heaviest.
-6. **result** — a win/lose overlay appears. choose **play again** to start a
-   fresh round (or press `n` at any time for a new game).
-
-### keyboard shortcuts
-
-| key | action |
-| --- | --- |
-| `w` | weigh |
-| `l` | place selected ball on the left pan |
-| `r` | place selected ball on the right pan |
-| `c` | clear both pans |
-| `i` | toggle identify mode |
-| `n` | new game |
-| `q` | quit |
+advance dialogue with **space** / **enter** (press once to reveal the whole line,
+again to continue); pick choices with the number keys or by clicking.
 
 ---
 
@@ -88,44 +49,31 @@ everything works with **mouse clicks** or **keyboard shortcuts**.
 
 ```
 src/malba_tahan/
-├── game.py        # pure puzzle logic (no ui) — rules, weighing, guessing
-├── scale_art.py   # renders the balance scale as terminal art (tilts with weight)
-├── app.py         # the textual ui: layout, styling, interaction
-└── __main__.py    # console entry point
-tests/
-└── test_game.py   # unit tests for the game logic
+├── app.py            # animated title/menu shell → launches the story
+├── engine/           # the visual-novel engine (content-agnostic)
+│   ├── anim.py       # pure animation math (typewriter, easing) — unit-tested
+│   ├── widgets.py    # animated widgets (typewriter, ascii art, name plate, ambient stars)
+│   ├── story.py      # scene/beat model + yaml loader + validation
+│   ├── assets.py     # loads ascii art
+│   ├── director.py   # walks the beats, branches on puzzle results
+│   └── novel_screen.py  # the stage (background + dialogue box)
+├── puzzles/          # bespoke, hand-crafted puzzle screens (balance, ...)
+├── game.py           # pure balance-puzzle rules (no ui) — unit-tested
+├── scale_art.py      # renders the balance scale
+├── content/          # the story as data: characters.yaml + chapters/*.yaml
+└── assets/art/       # hand-drawn ascii/unicode backgrounds
+tests/                # unit tests for the pure logic
 ```
 
-- **`game.py`** holds the rules with no ui dependency, so the mechanic is easy to
-  test: eight balls, one heavier, at most two weighings, win/lose on guess.
-- **`scale_art.py`** draws the beam, chains and pans onto a character grid so the
-  figure always lines up; the heavier pan dips downward.
-- **`app.py`** is a thin view layer over the game, in the original night-desert
-  gold colour scheme.
+see [`CLAUDE.md`](CLAUDE.md) for the architecture, the chapter/beat schema, and
+how to author new chapters and puzzles.
 
 ---
 
 ## development
 
 ```bash
-# install dev dependencies (pytest, textual-dev)
-uv sync --extra dev
-
-# run the tests
-uv run pytest
-
-# run the textual debug console (in a second terminal) while developing
-uv run textual run --dev malba_tahan.app:MalbaTahanApp
+uv sync --extra dev    # install dev deps (pytest, textual-dev)
+uv run pytest          # run the tests
+uv run textual run --dev malba_tahan.app:MalbaTahanApp   # dev console
 ```
-
----
-
-## notes and limitations
-
-- the mechanic (two weighings, one heavier ball among eight) follows the classic
-  balance puzzle often associated with mathematical riddles like those of
-  **malba tahan**.
-- there is no "reveal answer" option: the heavy ball's identity is only exposed
-  by the game's own logic when it checks your guess.
-- the game does **not** enforce an optimal strategy — it simply simulates the
-  balance, counts the weighings, and reports the result.

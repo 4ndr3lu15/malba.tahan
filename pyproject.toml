@@ -1,14 +1,15 @@
 [project]
 name = "malba.tahan"
-version = "0.0.1"
-description = "Malba Tahan — a terminal balance-puzzle toy inspired by Malba Tahan's 'The Man Who Counted'."
+version = "0.0.2"
+description = "Malba Tahan — a terminal visual-novel game inspired by Malba Tahan's 'The Man Who Counted'."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [{ name = "André Luís" }]
-keywords = ["game", "puzzle", "terminal", "tui", "textual", "malba-tahan"]
+keywords = ["game", "puzzle", "visual-novel", "terminal", "tui", "textual", "malba-tahan"]
 dependencies = [
     "textual>=0.79",
+    "pyyaml>=6",
 ]
 
 [project.scripts]
@@ -26,6 +27,11 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/malba_tahan"]
+# ship the story scripts and ascii art alongside the python sources
+artifacts = [
+    "src/malba_tahan/content/**/*.yaml",
+    "src/malba_tahan/assets/**/*.txt",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
