@@ -1,86 +1,131 @@
-## Malba Tahan – O Enigma do Sultão: 8 Pesos de Ouro
+# malba tahan — 8 weights of gold
 
-Esta mini-demo é inspirada no espírito do livro brasileiro **“O Homem que Calculava”**, de Malba Tahan, e dá nome ao repositório **“Malba Tahan”**.  
-Você é convidado a resolver um problema clássico de balança: descobrir qual das 8 esferas de ouro é ligeiramente mais pesada, usando a balança no máximo **duas vezes**.
+a terminal toy inspired by the spirit of the brazilian book **"the man who
+counted"** (*o homem que calculava*) by **malba tahan**, which also gives this
+repository its name.
 
-### Visão Geral do Projeto
+you are challenged with a classic balance puzzle: among **8 gold balls**, one is
+slightly **heavier** than the rest. discover which one using the balance scale at
+most **twice**.
 
-- **Objetivo**: Descobrir qual das 8 esferas aparentemente idênticas é a mais pesada.
-- **Restrição**: Você só pode apertar o botão **“Pesar”** no máximo **duas** vezes.
-- **Resultado**:
-  - Se identificar corretamente a esfera mais pesada, ganha o favor do Sultão.
-  - Se errar o palpite, ou não decidir em até duas pesagens, perde o desafio.
+this is a full rewrite of the original web demo as a **beautiful terminal
+application**, written in **python** with the [textual](https://textual.textualize.io/)
+tui framework and managed with [**uv**](https://docs.astral.sh/uv/).
 
-### Como o Jogo Funciona
+---
 
-- **Área de preparação**:
-  - As 8 esferas começam na área de preparação, numeradas de 1 a 8.
-  - A esfera mais pesada é escolhida aleatoriamente no início de cada partida e **não é visivelmente diferente** das demais.
+## overview
 
-- **Movendo esferas para a balança**:
-  - Clique em uma esfera na área de preparação para selecioná-la.
-  - Em seguida, clique em um dos pratos da balança (esquerdo ou direito) para colocá-la lá.
-  - Clique em uma esfera que já esteja na balança para devolvê-la à área de preparação (banco de esferas).
-  - Também é possível clicar em uma área vazia da zona de preparação para devolver a esfera atualmente selecionada.
+- **goal**: find the single heaviest ball among eight that look identical.
+- **constraint**: you may use the **weigh** action at most **twice**.
+- **outcome**:
+  - identify the heavy ball correctly → you win the sultan's favour.
+  - guess wrong (or run out of weighings and miss) → you lose the challenge.
 
-- **Pesando**:
-  - Você só pode clicar em **“Pesar”** quando **os dois pratos tiverem o mesmo número de esferas**.
-  - Internamente, cada esfera “normal” tem peso 10 e a esfera mais pesada tem peso 11.
-  - Ao pesar:
-    - A trave da balança se inclina para o lado mais pesado, ou permanece nivelada se os pesos forem iguais.
-    - O contador de pesagens é incrementado, até o máximo de 2.
-    - Ao atingir a segunda pesagem, o botão de pesar é desativado e você deve identificar qual esfera é a mais pesada.
+the heavy ball is chosen at random at the start of each round and is **not**
+visibly different — only the scale can reveal it. the game simulates the balance
+and counts your weighings; finding the answer in two weighings is up to you, like
+a true *man who counted*.
 
-- **Identificando a esfera pesada**:
-  - Clique em **“Identificar Bola Pesada”** para entrar no modo de identificação.
-  - Todas as esferas ficam clicáveis como palpite, com destaques visuais.
-  - Clique na esfera que você acredita ser a mais pesada:
-    - Se estiver correto, aparece um modal de **vitória**.
-    - Se estiver errado, aparece um modal de **derrota**, e o Sultão se mostra descontente.
-  - Antes de usar todas as pesagens, você pode cancelar o modo de identificação clicando novamente no botão.
+---
 
-- **Reiniciando / jogando novamente**:
-  - **Reiniciar**: Começa uma nova partida imediatamente, sorteando outra esfera pesada e zerando o contador de pesagens.
-  - **Jogar Novamente** (no modal final): Fecha o modal e inicia uma nova partida do zero.
+## running it
 
-### Arquitetura de Arquivos
+you only need [uv](https://docs.astral.sh/uv/) installed; it manages python and
+all dependencies for you.
 
-- `index.html`  
-  Define a estrutura da página:
-  - Sobreposição (modal) inicial com a história e as instruções.
-  - Cabeçalho principal com o título e o contador de pesagens.
-  - Área da balança com pratos esquerdo e direito e botões de controle (`Pesar`, `Identificar Bola Pesada`, `Reiniciar`).
-  - Área de preparação onde todas as esferas começam.
-  - Sobreposição final de fim de jogo para mensagens de vitória/derrota.
+```bash
+# from the project directory
+uv run malba.tahan
+```
 
-- `style.css`  
-  Define o visual:
-  - Fundo em clima de noite no deserto, com cores em tom de ouro e madeira.
-  - Modais de introdução e fim de jogo.
-  - Desenho estilizado da balança (trave, pratos, correntes, base).
-  - Esferas de ouro com brilho, sombra e estados de hover/seleção.
-  - Layout responsivo para telas menores.
+that's it — `uv` creates the environment, installs textual, and launches the app.
 
-- `script.js`  
-  Implementa a lógica do jogo:
-  - Cria as 8 esferas dinamicamente e sorteia qual será a mais pesada.
-  - Controla em que lugar cada esfera está (`staging` / área de preparação, `left` / prato esquerdo, `right` / prato direito).
-  - Garante que só é possível pesar quando os dois pratos têm o mesmo número de esferas.
-  - Calcula o resultado da pesagem e anima a inclinação da balança.
-  - Gerencia o modo de identificação, verificando vitória ou derrota.
-  - Controla o contador de pesagens e a exibição dos modais de início/fim de jogo.
+alternatively:
 
-### Como Executar o Projeto
+```bash
+uv run python -m malba_tahan
+```
 
-Você só precisa de um navegador moderno; não há dependências ou build.
+---
 
-1. Faça o download ou clone o repositório.
-2. Abra o arquivo `index.html` diretamente no navegador (duplo clique ou `Arquivo → Abrir`).
-3. Leia a introdução, clique em **“Aceitar Desafio”** e tente resolver o enigma do Sultão.
+## how to play
 
-### Notas de Implementação e Limitações
+the screen shows a balance scale, a status line (weighings used, balls per pan),
+control buttons, and the eight gold balls in a staging area below.
 
-- A mecânica (duas pesagens e uma esfera mais pesada entre oito) segue o problema clássico de balança muitas vezes associado a enigmas matemáticos como os de **Malba Tahan**.
-- Não há opção de “revelar resposta”: a identidade da esfera pesada só é exposta pela própria lógica do jogo, ao checar o seu palpite.
-- O jogo **não impõe** uma estratégia ótima; ele apenas simula a balança, conta as pesagens e informa o resultado. A arte de encontrar a solução em duas pesagens fica a cargo do jogador – como um verdadeiro “Homem que Calculava”.
+everything works with **mouse clicks** or **keyboard shortcuts**.
 
+1. **select a ball** — click a ball in the staging area (it highlights).
+2. **place it on a pan** — click **◀ place on left** or **place on right ▶**
+   (or press `l` / `r`).
+3. **return a ball** — click a ball that is already on a pan to send it back to
+   staging. **clear pans** (`c`) empties both pans at once.
+4. **weigh** — the **weigh** button (`w`) enables only when **both pans hold the
+   same number of balls** (at least one each). the beam tips toward the heavier
+   side; the heavier pan visibly sinks.
+5. **identify** — after your second weighing the game switches to identify mode
+   automatically. you can also enter it earlier with **identify heavy ball**
+   (`i`). in identify mode, click the ball you believe is heaviest.
+6. **result** — a win/lose overlay appears. choose **play again** to start a
+   fresh round (or press `n` at any time for a new game).
+
+### keyboard shortcuts
+
+| key | action |
+| --- | --- |
+| `w` | weigh |
+| `l` | place selected ball on the left pan |
+| `r` | place selected ball on the right pan |
+| `c` | clear both pans |
+| `i` | toggle identify mode |
+| `n` | new game |
+| `q` | quit |
+
+---
+
+## project layout
+
+```
+src/malba_tahan/
+├── game.py        # pure puzzle logic (no ui) — rules, weighing, guessing
+├── scale_art.py   # renders the balance scale as terminal art (tilts with weight)
+├── app.py         # the textual ui: layout, styling, interaction
+└── __main__.py    # console entry point
+tests/
+└── test_game.py   # unit tests for the game logic
+```
+
+- **`game.py`** holds the rules with no ui dependency, so the mechanic is easy to
+  test: eight balls, one heavier, at most two weighings, win/lose on guess.
+- **`scale_art.py`** draws the beam, chains and pans onto a character grid so the
+  figure always lines up; the heavier pan dips downward.
+- **`app.py`** is a thin view layer over the game, in the original night-desert
+  gold colour scheme.
+
+---
+
+## development
+
+```bash
+# install dev dependencies (pytest, textual-dev)
+uv sync --extra dev
+
+# run the tests
+uv run pytest
+
+# run the textual debug console (in a second terminal) while developing
+uv run textual run --dev malba_tahan.app:MalbaTahanApp
+```
+
+---
+
+## notes and limitations
+
+- the mechanic (two weighings, one heavier ball among eight) follows the classic
+  balance puzzle often associated with mathematical riddles like those of
+  **malba tahan**.
+- there is no "reveal answer" option: the heavy ball's identity is only exposed
+  by the game's own logic when it checks your guess.
+- the game does **not** enforce an optimal strategy — it simply simulates the
+  balance, counts the weighings, and reports the result.
